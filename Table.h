@@ -1,3 +1,4 @@
+#include <iomanip>
 #include <iostream>
 #include <algorithm>
 #include <string>
@@ -25,13 +26,13 @@ class Table{
 
 		void print_Table(){
 			std::for_each(this->columns_name.begin(), this->columns_name.end(),[this](std::string s){
-					std::cout <<  s << '\t';
+					std::cout << std::setw(15) <<  s << '\t';
 					});
 			std::cout << '\n';
 
 			for(int x = 0; x < this->size; x++){
 				for(int y = 0; y < columns_name.size(); y++){
-					std::cout << (*table[y])[x] << '\t';
+					std::cout << std::setw(15) << (*table[y])[x];
 				}
 				std::cout << '\n';
 			}
@@ -84,7 +85,6 @@ class Table{
 
 			});	*/			
 		}
-
 
 		/*
 		   ~Table(){
