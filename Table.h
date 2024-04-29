@@ -26,6 +26,7 @@ class Table{
 
 		std::string getName(){return name;}
 		void print_Table(){
+			std::cout << "___________________________________________\n" + name << std::endl;
 			std::for_each(this->columns_name.begin(), this->columns_name.end(),[this](std::string s){
 					std::cout << std::setw(15) <<  s << '\t';
 					});
@@ -37,7 +38,7 @@ class Table{
 				}
 				std::cout << '\n';
 			}
-			std::cout << '\n';
+			std::cout << "___________________________________________"  << std::endl;
 		}
 		void insert_into(std::vector<std::string> where_to_insert, std::vector<std::string> what_to_insert){
 			if(where_to_insert.size() != what_to_insert.size()) throw "Error";
@@ -53,6 +54,9 @@ class Table{
 				if(addnull) table[i]->push_back("");
 			}
 			size++;
+		}
+		void update(){
+
 		}
 
 		/*

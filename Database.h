@@ -3,17 +3,26 @@
 #include <algorithm>
 #include <vector>
 #include <string>
+#include "Tokenizer.h"
 #include "Parser.h"
 class Database{
 	private:
 		std::vector<Table> tables;
+		Tokenizer tokenizer;
+		Parser parser;
 	public:
 		Database(){} //We can have complex constructor for importing database
 		void execute(std::string query){
-			Parser parser;
-			Query* q = parser.parse(query);
-			if(q != nullptr)try {q->execute(&tables);}catch(char const* e) {std::cout << e << std::endl;}
-			delete q;
+			try {
+				auto tokens =  tokenizer.tokenize(query);	
+				Query *query = parser.parse(tokens);
+				try {query->execute(&tables);}
+				catch(std::string e) {std::cout << e << std::endl;}
+				catch(...){std::cout << "Unknown Exception Cought" << std::endl;}
+				if(query != nullptr)delete query;
+
+			} catch(std::string e){std::cout << e << std::endl;}
+
 		}
 		void printTable(){
 			std::for_each(tables.begin(), tables.end(), [](auto t){t.print_Table();});

@@ -12,27 +12,10 @@ class Query_Create : public Query{
 		std::string tableName;
 		std::vector<std::string> columnsName;
 	public:
-		Query_Create(std::string query){
-			//std::cout << "Inside Query_create constuctor with "  <<  query  << "\n";
-			//std::string query = "    CREATE   TabLe beton      (  sa  firma    ,   gazda    ,   palta   )  ;";
-			std::regex reg("^\\s*[Cc][Rr][Ee][Aa][Tt][Ee]\\s*[Tt][Aa][Bb][Ll][Ee]\\s*(\\w+)\\s*\\((.*)\\)\\s*;?$");
-			if ( regex_match(query, reg) ){
-				//std::cout << "Query matches regex \n";
-				std::smatch m;
-				regex_search(query, m, reg);
-
-				//std::cout << "Table name " << m.str(1) << " " << std::endl;
-				tableName = m.str(1);
-				std::string temp = m.str(2);
-				std::replace(temp.begin(), temp.end(), ',', ' ');
-				std::regex subreg("(\\w+)");
-				std::smatch submatch;
-				while (regex_search(temp, submatch, subreg)){
-					//std::cout << submatch.str(1) << std::endl;
-					columnsName.push_back(submatch.str(1));
-					temp = submatch.suffix();
-				}
-			}
+		Query_Create(std::vector<std::string> tokens) : Query(tokens){
+			if(!(lower(tokens[0]) == "create" && lower(tokens[1]) == "table")) throw std::string("Wrong Fromat");
+			tableName = tokens[2];
+			for(int i = 3; i < tokens.size(); i++) columnsName.push_back(tokens[i]);
 		}
 		void execute(std::vector<Table> *tables){
 			std::for_each(tables->begin(), tables->end(), [this](auto s){ //Checking if tableName already exists

@@ -2,6 +2,7 @@
 #define Query_Insert_h
 
 #include "Query.h"
+#include <algorithm>
 #include <regex>
 class Query_Insert : public Query {
 	private:
@@ -9,38 +10,34 @@ class Query_Insert : public Query {
 		std::vector<std::string> where_to_insert;
 		std::vector<std::string> what_to_insert;
 	public:
-		Query_Insert(std::string query){
-			std::regex reg("^\\s*[Ii][Nn][Ss][Ee][Rr][Tt]\\s*[Ii][Nn][Tt][Oo]\\s*(\\w+)\\s*\\(([^\\)]*)\\)\\s*[Vv][Aa][Ll][Uu][Ee][Ss]\\s*\\(([^\\)]*)\\);?$");
-			if ( regex_match(query, reg) ){
-				std::smatch m;
-				regex_search(query, m, reg);
-
-				//std::cout << "Table name " << m.str(1) << " " << std::endl;
-				tableName = m.str(1);
-				std::string temp = m.str(2);
-				std::replace(temp.begin(), temp.end(), ',', ' ');
-				std::regex subreg("(\\w+)");
-				std::smatch submatch;
-				while (regex_search(temp, submatch, subreg)){
-					where_to_insert.push_back(submatch.str(1));
-					temp = submatch.suffix();
-				}
-				temp = m.str(3);
-				std::replace(temp.begin(), temp.end(), ',', ' ');
-				while (regex_search(temp, submatch, subreg)){
-					what_to_insert.push_back(submatch.str(1));
-					temp = submatch.suffix();
-				}
+		Query_Insert(std::vector<std::string> tokens_) : Query(tokens_){
+			if(!(lower(tokens[0]) == "insert" && lower(tokens[1]) == "into")
+					&& std::find_if(
+						begin(tokens),
+						end(tokens),
+						[this](std::string obj){return obj == lower("values");}) 
+					!= end(tokens))
+				throw std::string("Wrong Fromat");
+			tableName = tokens[2];
+			int i = 3;
+			for(; lower(tokens[i]) != "values"; i++){
+				where_to_insert.push_back(tokens[i]);
 			}
+			i++;
+			for(; i < tokens.size(); i++){
+				what_to_insert.push_back(tokens[i]);
+			}
+			if(what_to_insert.size() != where_to_insert.size()) throw std::string("Wrong number of elements");
 		}
 		void execute(std::vector<Table> *tables){
 			Table* tablePointer = nullptr;
 			for(Table& table : *tables){
 				if(table.getName() == tableName){tablePointer = &table; break;}
 			}
-			if(tablePointer == nullptr) throw "There isn't table with name: " + tableName;
-			try{tablePointer->insert_into(where_to_insert,what_to_insert);}
-			catch(char const* errormessage) {std::cout << errormessage << std::endl;}
+			if(tablePointer == nullptr) throw "There isn't table with that name ";
+			tablePointer->insert_into(where_to_insert,what_to_insert);
+			//try{tablePointer->insert_into(where_to_insert,what_to_insert);}
+			//catch(char const* errormessage) {std::cout << errormessage << std::endl;}
 		}
 
 };

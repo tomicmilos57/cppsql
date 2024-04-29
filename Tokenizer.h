@@ -1,0 +1,31 @@
+#ifndef Tokenizer_h
+#define Tokenizer_h
+#include "Query_Create.h"
+#include "Query_Insert.h"
+#include <iostream>
+#include <vector>
+#include <string>
+#include <sstream>
+
+
+class Tokenizer{
+	public:
+		std::vector<std::string> tokenize(const std::string& query) {
+			std::vector<std::string> tokens;
+			std::istringstream iss(query);
+			std::string token;
+			while (iss >> token) {
+				std::string cleanedToken;
+				for (char c : token) {
+					if (!(c == '(' || c == ')' || c == ',')) {
+						cleanedToken += c;
+					}
+				}
+				if (!cleanedToken.empty()) {
+					tokens.push_back(cleanedToken);
+				}
+			}
+			return tokens;
+		}
+};
+#endif

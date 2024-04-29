@@ -1,22 +1,13 @@
-#ifndef Parser_h
-#define Parser_h
 #include "Query_Create.h"
 #include "Query_Insert.h"
+#include <vector>
+
 class Parser{
 	public:
-		Query* parse(std::string query){
-			std::regex regex("^\\s*(\\w+).*");
-			if ( regex_match(query, regex) ){
-				//std::cout << "Query matches regex \n";
-				std::smatch m;
-				regex_search(query, m, regex);
-
-				std::string operation = lower(m.str(1));
-				//std::cout << lower(m.str(1)) << std::endl;
-				if(lower(m.str(1)) == "create")return new Query_Create(query);
-				if(lower(m.str(1)) == "insert")return new Query_Insert(query);
-			}else{std::cout << "Query DOESN'T match regex \n";}
-			return nullptr;//throw exception
+		Query* parse(std::vector<std::string> tokens){
+			if(lower(tokens[0]) == "create")return new Query_Create(tokens);
+			if(lower(tokens[0]) == "insert")return new Query_Insert(tokens);
+			throw std::string("Unknown Instruction");
 		}
 
 	private:
@@ -27,4 +18,4 @@ class Parser{
 			return str;
 		}
 };
-#endif
+
