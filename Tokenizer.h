@@ -17,7 +17,13 @@ class Tokenizer{
 			while (iss >> token) {
 				std::string cleanedToken;
 				for (char c : token) {
-					if (!(c == '(' || c == ')' || c == ',')) {
+					if (c == '(' || c == ')' || c == ',') {
+						if (!cleanedToken.empty()) {
+							tokens.push_back(cleanedToken);
+							cleanedToken.clear();
+						}
+						tokens.push_back(std::string(1, c));
+					} else {
 						cleanedToken += c;
 					}
 				}
