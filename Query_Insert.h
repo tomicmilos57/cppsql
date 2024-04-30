@@ -11,7 +11,15 @@ class Query_Insert : public Query {
 		std::vector<std::string> what_to_insert;
 	public:
 		Query_Insert(std::vector<std::string> tokens_) : Query(tokens_){
-			if(!(lower(tokens[0]) == "insert" && lower(tokens[1]) == "into")
+			/*
+			 if(!(lower(tokens[0]) == "create" && lower(tokens[1]) == "table") && tokens[3] != "(") throw std::string("Wrong Fromat");
+			tableName = tokens[2];
+			int i = 4;
+			read_csv_until_delim(i, ")", columnsName);
+			if(i == tokens.size()) throw(std::string("No closing parentheses"));
+			if(!((i+1 == tokens.size() && tokens[i] == ")") || (i+2 == tokens.size() && tokens[i+1] == ";"))) throw std::string("Too many symbols at the end of the query");
+			 */
+			if(!(lower(tokens[0]) == "insert" && lower(tokens[1]) == "into" && tokens[3] == "(")
 					&& std::find_if(
 						begin(tokens),
 						end(tokens),
@@ -19,15 +27,19 @@ class Query_Insert : public Query {
 					!= end(tokens))
 				throw std::string("Wrong Fromat");
 			tableName = tokens[2];
-			int i = 3;
-			for(; lower(tokens[i]) != "values"; i++){
+			int i = 4;//check if i = 3 is (
+			read_csv_until_delim(i, ")", where_to_insert, false);
+			if(lower(tokens[++i]) != "values") throw std::string("Cannot find VALUES");
+			if(lower(tokens[++i]) != "(") throw std::string("Cannot find second parentheses");
+			read_csv_until_delim(++i, ")", what_to_insert, true);
+			/*for(; lower(tokens[i]) != "values"; i++){
 				where_to_insert.push_back(tokens[i]);
 			}
 			i++;
 			for(; i < tokens.size(); i++){
 				what_to_insert.push_back(tokens[i]);
 			}
-			if(what_to_insert.size() != where_to_insert.size()) throw std::string("Wrong number of elements");
+			if(what_to_insert.size() != where_to_insert.size()) throw std::string("Wrong number of elements");*/
 		}
 		void execute(std::vector<Table> *tables){
 			Table* tablePointer = nullptr;
