@@ -65,6 +65,21 @@ class Table{
 				}
 			}
 		}
+		void select(std::vector<std::string> columnsToSelect, Where& where) const{
+			for(int i = 0; i < size; i++){
+				if(where.conditionTrue(table, i, columns_name)){
+					for(auto str : columnsToSelect){
+						int j = 0;
+						for(; j < columns_name.size(); j++){//finding the index of a column
+							if(columns_name[j] == str) break;
+						}
+						if(j == columns_name.size()) throw std::string("Cannot find the column " + str);
+						std::cout << (*table[j])[i] << "\t";
+					}
+				}
+				std::cout << "\n";
+			}
+		}
 
 		/*
 		   ~Table(){

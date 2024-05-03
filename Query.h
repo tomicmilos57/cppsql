@@ -12,9 +12,9 @@ class Query{
 		void virtual execute(std::vector<Table> *tables){}
 	protected:
 		void read_csv_until_delim(int& i, std::string delim, std::vector<std::string>& columns, bool last){
-			for(; i < tokens.size() && tokens[i] != delim; i++) {
-				if(i%2==0)columns.push_back(tokens[i]);	
-				if(i%2==1)if(!(tokens[i] == "," || tokens[i] == delim)) throw std::string("Wrong Fromat in parentheses");
+			for(int j = 0; i < tokens.size() && lower(tokens[i]) != delim; i++, j++) {
+				if(j%2==0)columns.push_back(tokens[i]);	
+				if(j%2==1)if(!(tokens[i] == "," || lower(tokens[i]) == delim)) throw std::string("Wrong Fromat in parentheses: " + tokens[i]);
 			}
 			if(last){
 				if(i == tokens.size()) throw(std::string("No closing parentheses"));

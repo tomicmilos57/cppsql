@@ -2,6 +2,7 @@
 #include "Query_Insert.h"
 #include "Query_Drop.h"
 #include "Query_Update.h"
+#include "Query_Select.h"
 #include <vector>
 
 class Parser{
@@ -11,6 +12,7 @@ class Parser{
 			if(lower(tokens[0]) == "insert")return new Query_Insert(tokens);
 			if(lower(tokens[0]) == "drop")return new Query_Drop(tokens);
 			if(lower(tokens[0]) == "update")return new Query_Update(tokens);
+			if(lower(tokens[0]) == "select")return new Query_Select(tokens);
 			throw std::string("Unknown Instruction");
 		}
 
