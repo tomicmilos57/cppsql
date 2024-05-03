@@ -1,0 +1,3 @@
+Create table Beton (Firma, Gazda, Plata)
+INSERT INTO Beton (Firma, Gazda, Plata) VALUES (A, B, C)
+Update Beton set Firma = ZZZ, Gazda = Matija where Firma = A and Plata = C

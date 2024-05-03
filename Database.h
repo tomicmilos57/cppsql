@@ -1,10 +1,12 @@
 #ifndef Database_h
 #define Database_h
 #include <algorithm>
+#include <iterator>
 #include <vector>
 #include <string>
 #include "Tokenizer.h"
 #include "Parser.h"
+#include <fstream>
 class Database{
 	private:
 		std::vector<Table> tables;

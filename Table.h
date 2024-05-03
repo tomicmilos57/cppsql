@@ -1,10 +1,13 @@
 #ifndef Table_h
 #define Table_h
 
+#include "Where.h"
+#include "Set.h"
 #include <iomanip>
 #include <iostream>
 #include <algorithm>
 #include <string>
+#include <utility>
 #include <vector>
 #include <map>
 class Table{
@@ -18,7 +21,7 @@ class Table{
 	public:
 		Table(std::string name, std::vector<std::string>& columns_name){ //Throw exception if columns have the same name
 			this->name = name;
-			this->columns_name = columns_name;//Throw exception if columns are empty
+			this->columns_name = columns_name;//Throw exception if columns are empty in query_parser
 			std::for_each(this->columns_name.begin(), this->columns_name.end(),[this](std::string s){
 					this->table.push_back(new std::vector<std::string>());
 					});
@@ -41,7 +44,7 @@ class Table{
 			std::cout << "___________________________________________"  << std::endl;
 		}
 		void insert_into(std::vector<std::string> where_to_insert, std::vector<std::string> what_to_insert){
-			if(where_to_insert.size() != what_to_insert.size()) throw "Error";
+			if(where_to_insert.size() != what_to_insert.size()) throw "Error"; //throw this in parser
 			for(int i = 0; i < table.size(); i++){
 				bool addnull = true;
 				for(int j = 0; j < where_to_insert.size(); j++){
@@ -55,8 +58,12 @@ class Table{
 			}
 			size++;
 		}
-		void update(){
-
+		void update(Set& set, Where& where){
+			for(int i = 0; i < size; i++){
+				if(where.conditionTrue(table, i, columns_name)){
+					set.set(table, i, columns_name);
+				}
+			}
 		}
 
 		/*
