@@ -22,6 +22,32 @@ class Where{
 			}
 			return condition;
 		}
+		static Where read_where(int& i, const std::vector<std::string>& tokens, bool last){
+			Where where;
+			Where::Condition* cond;
+			std::string columnName;
+			std::string val;
+			for(int j = 0; i < tokens.size() && tokens[i] != ";"; i++, j++) {
+				if(j%4==0){columnName = tokens[i]; continue;}	
+				if(j%4==1){
+					if(tokens[i] != "=" && tokens[i] != "<>") throw std::string("Wrong Fromat with equals sign");
+					if(tokens[i] == "=") {cond = new Where::Equals();}
+					if(tokens[i] == "<>") {cond = new Where::NotEqual();}
+					continue;
+				}
+				if(j%4==2){val = tokens[i];
+					cond->columnName = columnName;
+					cond->value = val;
+					where.push_back(cond);
+					continue;}
+				if(j%4==3)if(lower(tokens[i]) != "and")// || lower(tokens[i]) == "or" 
+					throw std::string("Wrong Fromat");
+			}
+			if(last){
+				if(!((i+1 == tokens.size() && tokens[i] == ";" || i == tokens.size()))) throw std::string("Too many symbols at the end of the query");
+			}
+			return where;
+		}
 		void print(){
 			//std::for_each(pairs.begin(), pairs.end(), [](Condition* c){std::cout << c->columnName << " " << c->value << std::endl;});
 			for(Condition* c : pairs){
@@ -51,6 +77,12 @@ class Where{
 		}
 	private: 
 		std::vector<Condition*> pairs;
+		static std::string lower(std::string str){//make this function global f
+			for(int i = 0; i < str.size(); i++){
+				str[i] = std::tolower(str[i]);
+			}
+			return str;
+		}
 };
 
 #endif
