@@ -1,4 +1,28 @@
-Create table Beton (Firma, Gazda, Plata)
-INSERT INTO Beton (Firma, Gazda, Plata) VALUES (A, B, C)
-Update Beton set Firma = ZZZ, Gazda = Matija where Firma = A and Plata = C
-SELECT Firma, Gazda from Beton WHERE Firma = ZZZ and Gazda = Matija
+Create table Grikom (Radnik, Vozilo, Plata);
+INSERT INTO Grikom (Radnik, Vozilo, Plata) VALUES ("Aca", "Mikser", "100k");
+INSERT INTO Grikom (Radnik, Vozilo, Plata) VALUES ("Buva", "Pumpa", "150k");
+INSERT INTO Grikom (Radnik, Vozilo, Plata) VALUES ("Solaja", "Mikser", "90k");
+INSERT INTO Grikom (Radnik, Vozilo, Plata) VALUES ("Nemanja", "Mikser", "70k");
+INSERT INTO Grikom (Radnik, Vozilo, Plata) VALUES ("Mirko", "Pumpa", "100k");
+INSERT INTO Grikom (Radnik) VALUES ("Matija");
+Delete From Grikom WHERE Radnik = "Buva";
+Delete From Grikom WHERE Radnik = "Mirko";
+Delete From Grikom WHERE Radnik = "Aca";
+Delete From Grikom WHERE Radnik = "Nemanja";
+Delete From Grikom WHERE Radnik = "Solaja";
+Delete From Grikom WHERE Radnik = "Matija";
+INSERT INTO Grikom (Radnik, Vozilo, Plata) VALUES ("Aca", "Mikser", "100k");
+INSERT INTO Grikom (Radnik, Vozilo, Plata) VALUES ("Buva", "Pumpa", "150k");
+INSERT INTO Grikom (Radnik, Vozilo, Plata) VALUES ("Solaja", "Mikser", "90k");
+INSERT INTO Grikom (Radnik, Vozilo, Plata) VALUES ("Nemanja", "Mikser", "70k");
+INSERT INTO Grikom (Radnik, Vozilo, Plata) VALUES ("Mirko", "Pumpa", "100k");
+INSERT INTO Grikom (Radnik) VALUES ("Matija");
+Create table Radnik (Ime, Starost, Pol);
+INSERT INTO Radnik (Ime, Starost, Pol) VALUES ("Aca", "30", "M");
+INSERT INTO Radnik (Ime, Starost, Pol) VALUES ("Buva", "40", "M");
+INSERT INTO Radnik (Ime, Starost, Pol) VALUES ("Solaja", "50", "M");
+INSERT INTO Radnik (Ime, Starost, Pol) VALUES ("Nemanja", "40", "M");
+INSERT INTO Radnik (Ime, Starost, Pol) VALUES ("Mirko", "70", "M");
+INSERT INTO Radnik (Ime, Pol) VALUES ("Matija", "Z");
+Update Grikom set Plata = "150k" where Radnik = "Aca";
+SELECT Radnik from Grikom WHERE Vozilo = "Mikser";

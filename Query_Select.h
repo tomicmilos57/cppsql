@@ -16,7 +16,7 @@ class Query_Select : public Query{
 		Query_Select(std::vector<std::string> tokens) : Query(tokens){
 			if(lower(tokens[0]) != "select") throw std::string("Wrong Fromat");
 			int i = 1;
-			read_csv_until_delim(i, "from", columns, 0);
+			read_columns(i, "from", columns, 0, 0);
 			if(lower(tokens[i++]) != "from") throw std::string("Where is from keyword?!?!");
 			tableName = tokens[i++];
 			if(lower(tokens[i]) != "where") throw std::string("Where is where?!?!");
@@ -27,7 +27,7 @@ class Query_Select : public Query{
 			for(Table& table : *tables){
 				if(table.getName() == tableName){tablePointer = &table; break;}
 			}
-			if(tablePointer == nullptr) throw "There isn't a table with that name ";
+			if(tablePointer == nullptr) throw std::string("There isn't a table with that name ");
 			tablePointer->select(columns, where);
 		}
 };

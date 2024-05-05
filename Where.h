@@ -35,7 +35,10 @@ class Where{
 					if(tokens[i] == "<>") {cond = new Where::NotEqual();}
 					continue;
 				}
-				if(j%4==2){val = tokens[i];
+				if(j%4==2){
+					if(!(*tokens[i].begin() == '\"' && *tokens[i].rbegin() == '\"'))throw std::string("No such column: " + tokens[i]);
+					std::string temp = tokens[i].substr(1, tokens[i].size() - 2);
+					val = temp;
 					cond->columnName = columnName;
 					cond->value = val;
 					where.push_back(cond);

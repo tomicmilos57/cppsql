@@ -20,6 +20,8 @@ class Database{
 				Query *query = parser.parse(tokens);
 				try {query->execute(&tables);}
 				catch(std::string e) {std::cout << e << std::endl;}
+				catch(const std::runtime_error& re){std::cerr << "Runtime error: " << re.what() << std::endl;}
+				catch(const std::exception& ex){std::cerr << "Error occurred: " << ex.what() << std::endl;}
 				catch(...){std::cout << "Unknown Exception Cought" << std::endl;}
 				if(query != nullptr)delete query;
 

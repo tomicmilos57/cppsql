@@ -3,6 +3,7 @@
 #include "Query_Drop.h"
 #include "Query_Update.h"
 #include "Query_Select.h"
+#include "Query_Delete.h"
 #include <vector>
 
 class Parser{
@@ -13,6 +14,7 @@ class Parser{
 			if(lower(tokens[0]) == "drop")return new Query_Drop(tokens);
 			if(lower(tokens[0]) == "update")return new Query_Update(tokens);
 			if(lower(tokens[0]) == "select")return new Query_Select(tokens);
+			if(lower(tokens[0]) == "delete")return new Query_Delete(tokens);
 			throw std::string("Unknown Instruction");
 		}
 

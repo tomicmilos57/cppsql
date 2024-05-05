@@ -35,7 +35,10 @@ class Set{
 			for(int j = 0; i < tokens.size() && lower(tokens[i]) != delim; i++, j++) {
 				if(j%4==0){vec = new Set::ChangeTo();vec->columnName = tokens[i];}	
 				if(j%4==1)if(tokens[i] != "=") throw std::string("Wrong Fromat with equals sign");
-				if(j%4==2){vec->value = tokens[i];s.push_back(vec);}
+				if(j%4==2){
+					if(!(*tokens[i].begin() == '\"' && *tokens[i].rbegin() == '\"'))throw std::string("No such column: " + tokens[i]);
+					vec->value = tokens[i].substr(1, tokens[i].size() - 2);
+					s.push_back(vec);}
 				if(j%4==3){if(!(tokens[i] == "," || lower(tokens[i]) == delim))throw std::string("Wrong Fromat in parentheses");}
 			}
 			if(last){
@@ -44,7 +47,7 @@ class Set{
 			}
 			return s;
 		}
-		
+
 
 	private:
 		std::vector<ChangeTo*> pairs;

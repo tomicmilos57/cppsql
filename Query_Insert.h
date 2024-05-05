@@ -28,10 +28,10 @@ class Query_Insert : public Query {
 				throw std::string("Wrong Fromat");
 			tableName = tokens[2];
 			int i = 4;//check if i = 3 is (
-			read_csv_until_delim(i, ")", where_to_insert, false);
+			read_columns(i, ")", where_to_insert, false, false);
 			if(lower(tokens[++i]) != "values") throw std::string("Cannot find VALUES");
 			if(lower(tokens[++i]) != "(") throw std::string("Cannot find second parentheses");
-			read_csv_until_delim(++i, ")", what_to_insert, true);
+			read_columns(++i, ")", what_to_insert, true, true);
 			/*for(; lower(tokens[i]) != "values"; i++){
 				where_to_insert.push_back(tokens[i]);
 			}

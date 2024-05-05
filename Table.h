@@ -66,6 +66,7 @@ class Table{
 			}
 		}
 		void select(std::vector<std::string> columnsToSelect, Where& where) const{
+			if(columnsToSelect.size() == 1 && columnsToSelect[0] == "*") columnsToSelect = columns_name;
 			for(int i = 0; i < size; i++){
 				if(where.conditionTrue(table, i, columns_name)){
 					for(auto str : columnsToSelect){
@@ -74,13 +75,23 @@ class Table{
 							if(columns_name[j] == str) break;
 						}
 						if(j == columns_name.size()) throw std::string("Cannot find the column " + str);
-						std::cout << (*table[j])[i] << "\t";
+						std::cout << (*table[j])[i] << "\t"; //this should append to a string and print a string at the end
 					}
 				}
 				std::cout << "\n";
 			}
 		}
 
+		void _delete(Where& where){
+			for(int i = 0; i < size; i++){
+				if(where.conditionTrue(table, i, columns_name)){
+					for(int j = 0; j < columns_name.size(); j++){//finding the index of a column
+						(*table[j]).erase((*table[j]).begin() + i);
+					}
+					size--;
+				}
+			}
+		}
 		/*
 		   ~Table(){
 		   std::for_each(this->columns_name.begin(), this->columns_name.end(),[this](std::string s){
