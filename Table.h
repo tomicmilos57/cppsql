@@ -4,14 +4,10 @@
 #include "Where.h"
 #include "Set.h"
 #include <fstream>
-#include <iomanip>
+#include <iomanip>//needed for stringstream
 #include <iostream>
-#include <algorithm>
-#include <ostream>
 #include <string>
-#include <utility>
 #include <vector>
-#include <map>
 class Table{
 	private:
 		std::string name;
@@ -19,16 +15,15 @@ class Table{
 		std::vector<std::vector<std::string>> table;
 		int size = 0;
 	public:
-		Table(std::string name, std::vector<std::string>& columns_name);
-
-		std::string getName(){return name;}
-		void save(std::ofstream& os);
+		Table(std::string name, std::vector<std::string> const & columns_name);
 		Table(std::ifstream& os);
-		void print_Table();
-		void insert_into(std::vector<std::string> where_to_insert, std::vector<std::string> what_to_insert);
+		std::string getName()const{return name;}
+		void save(std::ofstream& os)const;
+		void print_Table() const;
+		void insert_into(std::vector<std::string> const & where_to_insert, std::vector<std::string> const & what_to_insert);
 		void update(Set& set, Where& where);
-		void select(std::vector<std::string> columnsToSelect, Where& where) const;
-		void _delete(Where& where);
+		void select(std::vector<std::string> const & columnsToSelect, Where const & where) const;
+		void _delete(Where const & where);
 		/*
 		   ~Table(){
 		   std::for_each(this->columns_name.begin(), this->columns_name.end(),[this](std::string s){

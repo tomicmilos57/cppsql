@@ -1,6 +1,5 @@
 #include "Table.h"
-#include <sstream>
-Table::Table(std::string name, std::vector<std::string>& columns_name){ //Throw exception if columns have the same name
+Table::Table(std::string name, std::vector<std::string> const & columns_name){ //Throw exception if columns have the same name
 	this->name = name;
 	this->columns_name = columns_name;//Throw exception if columns are empty in query_parser
 	std::for_each(this->columns_name.begin(), this->columns_name.end(),[this](std::string s){
@@ -8,11 +7,11 @@ Table::Table(std::string name, std::vector<std::string>& columns_name){ //Throw 
 			});
 }
 
-void Table::save(std::ofstream& os){
+void Table::save(std::ofstream& os) const {
 	os << name << std::endl;
 	os << size<< std::endl;
 	os << columns_name.size()<< std::endl;
-	for(std::string& column : columns_name){
+	for(std::string const & column : columns_name){
 		os << column<< std::endl;
 	}
 	for(std::vector<std::string> column : table){
@@ -45,12 +44,7 @@ Table::Table(std::ifstream& os){
 		table.push_back(temp);
 	}
 }
-void Table::print_Table(){
-	/*std::cout << "___________________________________________\n" + name << std::endl;
-	std::for_each(this->columns_name.begin(), this->columns_name.end(),[this](std::string s){
-			std::cout << std::setw(15) <<  s << '\t';
-			});
-	std::cout << '\n';*/
+void Table::print_Table() const {
 	std::stringstream print;
 	print_columns(print, columns_name, name);
 
@@ -71,8 +65,9 @@ void Table::print_columns(std::ostream& os, std::vector<std::string>const & colu
 	os << '\n';
 
 }
-void Table::select(std::vector<std::string> columnsToSelect, Where& where) const{
-	if(columnsToSelect.size() == 1 && columnsToSelect[0] == "*") columnsToSelect = columns_name;
+void Table::select(std::vector<std::string> const & columnsSelect, Where const & where) const{
+	std::vector<std::string> columnsToSelect = columnsSelect;
+	if(columnsSelect.size() == 1 && columnsSelect[0] == "*") columnsToSelect = columns_name;
 	std::stringstream print;
 	print_columns(print, columnsToSelect, name);
 	for(int i = 0; i < size; i++){
@@ -91,7 +86,7 @@ void Table::select(std::vector<std::string> columnsToSelect, Where& where) const
 	print << "___________________________________________"  << std::endl;
 	std::cout << print.str();
 }
-void Table::insert_into(std::vector<std::string> where_to_insert, std::vector<std::string> what_to_insert){
+void Table::insert_into(std::vector<std::string> const & where_to_insert, std::vector<std::string> const & what_to_insert){
 	if(where_to_insert.size() != what_to_insert.size()) throw "Error"; //throw this in parser
 	for(int i = 0; i < table.size(); i++){
 		bool addnull = true;
@@ -114,7 +109,7 @@ void Table::update(Set& set, Where& where){
 	}
 }
 
-void Table::_delete(Where& where){
+void Table::_delete(Where const & where){
 	for(int i = 0; i < size; i++){
 		if(where.conditionTrue(table, i, columns_name)){
 			for(int j = 0; j < columns_name.size(); j++){//finding the index of a column
