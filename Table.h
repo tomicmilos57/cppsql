@@ -7,6 +7,7 @@
 #include <iomanip>
 #include <iostream>
 #include <algorithm>
+#include <ostream>
 #include <string>
 #include <utility>
 #include <vector>
@@ -34,5 +35,7 @@ class Table{
 		   delete this->table[s];
 		   });
 		   }*/
+	private:
+		static void print_columns(std::ostream& os, std::vector<std::string>const & columns_name, std::string const & name);
 };
 #endif
