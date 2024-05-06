@@ -24,8 +24,8 @@ std::string Query::lower(std::string str){
 }
 #include "Query_Create.h"
 Query_Create::Query_Create(std::vector<std::string> tokens) : Query(tokens){
-	if(!(lower(tokens[0]) == "create" && lower(tokens[1]) == "table") && tokens[3] != "(") throw std::string("Wrong Fromat");
-	tableName = tokens[2];
+	if(!(lower(tokens.at(0)) == "create" && lower(tokens.at(1)) == "table") && tokens.at(3) != "(") throw std::string("Wrong Fromat");
+	tableName = tokens.at(2);
 	int i = 4;
 	read_columns(i, ")", columnsName, true, false);
 }
@@ -38,10 +38,9 @@ void Query_Create::execute(std::vector<Table> *tables){
 }
 #include "Query_Delete.h"
 Query_Delete::Query_Delete(std::vector<std::string> tokens) : Query(tokens){	
-	if(!(lower(tokens[0]) == "delete" && lower(tokens[1]) == "from")) throw std::string("Wrong Fromat");
-	tableName = tokens[2];//check if this token exists before accesing it or use .at and throw exception
-	if(lower(tokens[3]) != "where") throw std::string("Where where?!?");
-	int i = 4;
+	if(!(lower(tokens.at(0)) == "delete" && lower(tokens.at(1)) == "from")) throw std::string("Wrong Fromat");
+	tableName = tokens.at(2);//check if this token exists before accesing it or use .at and throw exception
+	int i = 3;
 	where = Where::read_where(i, tokens, 1);
 }
 void Query_Delete::execute(std::vector<Table> *tables){
@@ -54,8 +53,8 @@ void Query_Delete::execute(std::vector<Table> *tables){
 }
 #include "Query_Drop.h"
 Query_Drop::Query_Drop(std::vector<std::string> tokens) : Query(tokens){
-	if(!(lower(tokens[0]) == "drop" && lower(tokens[1]) == "table" && tokens.size() == 3)) throw std::string("Wrong Fromat");
-	tableName = tokens[2];
+	if(!(lower(tokens.at(0)) == "drop" && lower(tokens.at(1)) == "table" && tokens.size() == 3)) throw std::string("Wrong Fromat");
+	tableName = tokens.at(2);
 }
 void Query_Drop::execute(std::vector<Table> *tables){
 	for(auto it = tables->begin(); it != tables->end(); ++it){
@@ -69,18 +68,20 @@ void Query_Drop::execute(std::vector<Table> *tables){
 }
 #include "Query_Insert.h"
 Query_Insert::Query_Insert(std::vector<std::string> tokens_) : Query(tokens_){
-	if(!(lower(tokens[0]) == "insert" && lower(tokens[1]) == "into" && tokens[3] == "(")
+	/*if(!(lower(tokens.at(0)) == "insert" && lower(tokens.at(1)) == "into" && tokens.at(3) == "(")
 			&& std::find_if(
 				begin(tokens),
 				end(tokens),
 				[this](std::string obj){return obj == lower("values");}) 
 			!= end(tokens))
+		throw std::string("Wrong Fromat");*/
+	if(!(lower(tokens.at(0)) == "insert" && lower(tokens.at(1)) == "into" && tokens.at(3) == "("))
 		throw std::string("Wrong Fromat");
-	tableName = tokens[2];
+	tableName = tokens.at(2);
 	int i = 4;//check if i = 3 is (
 	read_columns(i, ")", where_to_insert, false, false);
-	if(lower(tokens[++i]) != "values") throw std::string("Cannot find VALUES");
-	if(lower(tokens[++i]) != "(") throw std::string("Cannot find second parentheses");
+	if(lower(tokens.at(++i)) != "values") throw std::string("Cannot find VALUES");
+	if(lower(tokens.at(++i)) != "(") throw std::string("Cannot find second parentheses");
 	read_columns(++i, ")", what_to_insert, true, true);
 }
 void Query_Insert::execute(std::vector<Table> *tables){
@@ -93,13 +94,12 @@ void Query_Insert::execute(std::vector<Table> *tables){
 }
 #include "Query_Select.h"
 Query_Select::Query_Select(std::vector<std::string> tokens) : Query(tokens){
-	if(lower(tokens[0]) != "select") throw std::string("Wrong Fromat");
+	if(lower(tokens.at(0)) != "select") throw std::string("Wrong Fromat");
 	int i = 1;
 	read_columns(i, "from", columns, 0, 0);
-	if(lower(tokens[i++]) != "from") throw std::string("Where is from keyword?!?!");
-	tableName = tokens[i++];
-	if(lower(tokens[i]) != "where") throw std::string("Where is where?!?!");
-	where = Where::read_where(++i, tokens, 1);
+	if(lower(tokens.at(i++)) != "from") throw std::string("Where is from keyword?!?!");
+	tableName = tokens.at(i++);
+	where = Where::read_where(i, tokens, 1);
 }
 void Query_Select::execute(std::vector<Table> *tables){
 	Table* tablePointer = nullptr;
@@ -111,11 +111,11 @@ void Query_Select::execute(std::vector<Table> *tables){
 }
 #include "Query_Update.h"
 Query_Update::Query_Update(std::vector<std::string> tokens) : Query(tokens){
-	if(!(lower(tokens[0]) == "update" && lower(tokens[2]) == "set")) throw std::string("Wrong Fromat");
-	tableName = tokens[1];
+	if(!(lower(tokens.at(0)) == "update" && lower(tokens.at(2)) == "set")) throw std::string("Wrong Fromat");
+	tableName = tokens.at(1);
 	int i = 3;
 	set = Set::read_set(i, "where", tokens, 0);
-	where = Where::read_where(++i, tokens, 1);
+	where = Where::read_where(i, tokens, 1);
 }
 void Query_Update::execute(std::vector<Table> *tables){
 	Table* tablePointer = nullptr;

@@ -15,10 +15,16 @@ bool Where::conditionTrue(std::vector<std::vector<std::string>> table, int row, 
 	return condition;
 }
 Where Where::read_where(int& i, const std::vector<std::string>& tokens, bool last){
+	if((tokens.size() <= i) || (tokens.size() - 1 == i) && tokens[i] == ";"){//if there isn't "where" token
+		return TrueWhere();
+	}
+	if(lower(tokens[i]) != "where") throw std::string("Where is where?!?!");
+	i++;
 	Where where;
 	Where::Condition* cond;
 	std::string columnName;
 	std::string val;
+	//std::cout << i << " " << tokens[i] << std::endl;
 	for(int j = 0; i < tokens.size() && tokens[i] != ";"; i++, j++) {
 		if(j%4==0){columnName = tokens[i]; continue;}	
 		if(j%4==1){

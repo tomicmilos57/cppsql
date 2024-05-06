@@ -6,7 +6,7 @@
 #include <iostream>
 class Set{
 	public:
-		void set(std::vector<std::vector<std::string>> table, int row, const std::vector<std::string> columnName);
+		void set(std::vector<std::vector<std::string>>& table, int row, const std::vector<std::string> columnName);
 		void print();
 		struct ChangeTo{
 			std::string columnName;

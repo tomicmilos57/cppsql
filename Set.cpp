@@ -1,5 +1,5 @@
 #include "Set.h"
-void Set::set(std::vector<std::vector<std::string>> table, int row, const std::vector<std::string> columnName){
+void Set::set(std::vector<std::vector<std::string>>& table, int row, const std::vector<std::string> columnName){
 	for(auto pair : pairs){
 		int i = 0;
 		for(; i < columnName.size(); i++){//finding the index of a column

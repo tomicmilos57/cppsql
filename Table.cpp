@@ -85,7 +85,7 @@ void Table::select(std::vector<std::string> columnsToSelect, Where& where) const
 				if(j == columns_name.size()) throw std::string("Cannot find the column " + str);
 				print << std::setw(15) << (table[j])[i] << "\t"; //this should append to a string and print a string at the end
 			}
-		print << "\n";
+			print << "\n";
 		}
 	}
 	print << "___________________________________________"  << std::endl;
@@ -120,6 +120,7 @@ void Table::_delete(Where& where){
 			for(int j = 0; j < columns_name.size(); j++){//finding the index of a column
 				(table[j]).erase((table[j]).begin() + i);
 			}
+			i--;
 			size--;
 		}
 	}

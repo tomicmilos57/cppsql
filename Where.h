@@ -7,9 +7,9 @@
 #include <iostream>
 class Where{
 	public:
-		bool conditionTrue(std::vector<std::vector<std::string>> table, int row, const std::vector<std::string> columnName);
+		virtual bool conditionTrue(std::vector<std::vector<std::string>> table, int row, const std::vector<std::string> columnName);
 		static Where read_where(int& i, const std::vector<std::string>& tokens, bool last);
-		void print();
+		virtual void print();
 		class Condition{
 			public:
 				std::string columnName;
@@ -36,4 +36,8 @@ class Where{
 		static std::string lower(std::string str);
 };
 
+class TrueWhere : public Where{
+	bool conditionTrue(std::vector<std::vector<std::string>> table, int row, const std::vector<std::string> columnName)override{return true;}
+	void print()override{std::cout << "TRUE" << std::endl;}
+};
 #endif

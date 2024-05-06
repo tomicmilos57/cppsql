@@ -11,6 +11,7 @@
 class Tokenizer{
 	public:
 		std::vector<std::string> tokenize(const std::string& query) {
+			if(query == "") throw std::string("Empty Query");
 			std::vector<std::string> tokens;
 			std::istringstream iss(query);
 			std::string token;
