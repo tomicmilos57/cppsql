@@ -16,13 +16,16 @@ class Table{
 		int size = 0;
 	public:
 		Table(std::string name, std::vector<std::string> const & columns_name);
-		Table(std::ifstream& os);
+		Table(std::ifstream& os);//for reading savefile
+		Table(Table const & t1, Table const & t2, std::string abbr1, std::string abbr2, Where const & viewWhere);//for inner join
 		std::string getName()const{return name;}
 		void save(std::ofstream& os)const;
 		void print_Table() const;
 		void insert_into(std::vector<std::string> const & where_to_insert, std::vector<std::string> const & what_to_insert);
 		void update(Set& set, Where& where);
 		void select(std::vector<std::string> const & columnsToSelect, Where const & where) const;
+		static void innerjoin(Table const & Table1, Table const & Table2, std::vector<std::string> const & columns,
+				std::string abbreviation1, std::string abbreviation2, Where& viewWhere, Where& where);
 		void _delete(Where const & where);
 		/*
 		   ~Table(){

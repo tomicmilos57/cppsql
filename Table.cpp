@@ -6,7 +6,31 @@ Table::Table(std::string name, std::vector<std::string> const & columns_name){ /
 			this->table.push_back(std::vector<std::string>());
 			});
 }
+Table::Table(Table const & t1, Table const & t2, std::string abbr1, std::string abbr2, Where const & viewWhere){//for inner join
+	this->name = "INNER JOIN";
+	for(std::string str : t1.columns_name){
+		this->columns_name.push_back(abbr1 + "." + str);
+	}
+	for(std::string str : t2.columns_name){
+		this->columns_name.push_back(abbr2 + "." + str);
+	}
+	std::for_each(this->columns_name.begin(), this->columns_name.end(),[this](std::string s){
+			this->table.push_back(std::vector<std::string>());
+			});
+	for(int i = 0; i < t1.size; i++){
+		std::vector<std::string> row1;
+		for(int k = 0; k < t1.table.size(); k++)row1.push_back(t1.table[k][i]);
+		for(int j = 0; j < t2.size; j++){
+			std::vector<std::string> row2;
+			for(int k = 0; k < t2.table.size(); k++)row2.push_back(t2.table[k][j]);
+			std::vector<std::string> temp;
+			temp.insert(temp.end(), row1.begin(), row1.end() );
+			temp.insert(temp.end(), row2.begin(), row2.end() );
+			if(viewWhere.conditionTrue(temp, columns_name))this->insert_into(this->columns_name, temp);
+		}
+	}
 
+}
 void Table::save(std::ofstream& os) const {
 	os << name << std::endl;
 	os << size<< std::endl;
@@ -85,6 +109,12 @@ void Table::select(std::vector<std::string> const & columnsSelect, Where const &
 	}
 	print << "___________________________________________"  << std::endl;
 	std::cout << print.str();
+}
+
+void Table::innerjoin(Table const & Table1, Table const & Table2, std::vector<std::string> const & columns,
+		std::string abbreviation1, std::string abbreviation2, Where& viewWhere, Where& where){
+	Table view(Table1, Table2, abbreviation1, abbreviation2, viewWhere);
+	view.select(columns, where);
 }
 void Table::insert_into(std::vector<std::string> const & where_to_insert, std::vector<std::string> const & what_to_insert){
 	if(where_to_insert.size() != what_to_insert.size()) throw "Error"; //throw this in parser

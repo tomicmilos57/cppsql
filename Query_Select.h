@@ -10,8 +10,13 @@ class Query_Select : public Query{
 	private:
 		std::string tableName;
 		std::vector<std::string> columns;
-		Set set;
 		Where where;
+		//////////////
+		bool innerjoin = false;
+		Where viewWhere;
+		std::string abbreviation;
+		std::string tableName2;
+		std::string abbreviation2;
 	public:
 		Query_Select(std::vector<std::string> tokens);
 		void execute(std::vector<Table> *tables);

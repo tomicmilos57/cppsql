@@ -1,8 +1,9 @@
 #include "Database.h"
 void Database::execute(std::string strQuery){
+	Query *query;
 	try {
 		auto tokens =  tokenizer.tokenize(strQuery);	
-		Query *query = parser.parse(tokens);
+		query = parser.parse(tokens);
 		try {
 			query->execute(&tables);
 			sqlFile.append(strQuery + ";\n");
@@ -12,9 +13,7 @@ void Database::execute(std::string strQuery){
 		catch(const std::exception& ex){std::cerr << "Error occurred: " << ex.what() << std::endl;}
 		catch(...){std::cout << "Unknown Exception Cought" << std::endl;}
 		if(query != nullptr)delete query;
-
 	} catch(std::string e){std::cout << e << std::endl;}
-
 }
 void Database::printTable(){
 	std::for_each(tables.begin(), tables.end(), [](auto t){t.print_Table();});
