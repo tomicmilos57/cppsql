@@ -26,3 +26,4 @@ INSERT INTO Radnik (Ime, Starost, Pol) VALUES ('Mirko', '70', 'M');
 INSERT INTO Radnik (Ime, Pol) VALUES ('Matija', 'Z');
 Update Grikom set Plata = '150k' where Radnik = 'Aca';
 SELECT Radnik from Grikom WHERE Vozilo = 'Mikser';
+Select * From Grikom g INNER JOIN Radnik r ON g.Radnik = r.Ime
