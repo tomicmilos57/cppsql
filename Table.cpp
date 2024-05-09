@@ -1,4 +1,6 @@
 #include "Table.h"
+#include <iterator>
+#include <sstream>
 Table::Table(std::string name, std::vector<std::string> const & columns_name){ //Throw exception if columns have the same name
 	this->name = name;
 	this->columns_name = columns_name;//Throw exception if columns are empty in query_parser
@@ -30,6 +32,31 @@ Table::Table(Table const & t1, Table const & t2, std::string abbr1, std::string 
 		}
 	}
 
+}
+void Table::save_sql(std::ofstream& os)const{
+	std::stringstream create;
+	create << "CREATE TABLE " << this->name << " ";
+	std::stringstream columns;
+	columns << "(";
+	for(int i = 0; i < columns_name.size(); i++){
+		columns << columns_name[i];
+		if(i < columns_name.size() - 1)columns << ", ";
+	}
+	columns << ")";
+	create << columns.str() << ";";
+	os << create.str() << std::endl;
+	std::stringstream insert_template;
+	insert_template << "INSERT INTO " << this->name << " " << columns.str() << " VALUES (";
+	for(int i = 0; i < this->size; i++){
+		std::stringstream insert;
+		insert << insert_template.str();
+		for(int j = 0; j < columns_name.size(); j++){
+			insert << "\'" << table[j][i] << "\'";
+			if(j < columns_name.size() - 1)insert << ", ";
+		}
+		insert << ");" << std::endl;
+		os << insert.str();
+	}
 }
 void Table::save(std::ofstream& os) const {
 	os << name << std::endl;

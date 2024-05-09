@@ -6,7 +6,6 @@ void Database::execute(std::string strQuery){
 		query = parser.parse(tokens);
 		try {
 			query->execute(&tables);
-			sqlFile.append(strQuery + ";\n");
 		}
 		catch(std::string e) {std::cout << e << std::endl;}
 		catch(const std::runtime_error& re){std::cerr << "Runtime error: " << re.what() << std::endl;}
@@ -18,11 +17,10 @@ void Database::execute(std::string strQuery){
 void Database::printTable(){
 	std::for_each(tables.begin(), tables.end(), [](auto t){t.print_Table();});
 }
-void Database::save_sql(){
-	std::ofstream output;
-	output.open("output.sql");
-	output << sqlFile;
-	output.close();
+void Database::save_sql(std::ofstream& os){
+	for(Table& table : tables){
+		table.save_sql(os);
+	}
 }
 void Database::save(std::ofstream& os){
 	os << tables.size() << std::endl;

@@ -60,7 +60,12 @@ int main(){
 				std::string file_name;
 				std::cout << "Enter file name (Without extension)" << std::endl;
 				std::cin >> file_name;
-				if(dec==1)database.save_sql();
+				if(dec==1){
+					std::ofstream os;
+					os.open(file_name + ".sql");
+					database.save_sql(os);
+					os.close();
+				}
 				if(dec==2){
 					std::ofstream os;
 					os.open(file_name + ".sqlpp");

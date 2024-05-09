@@ -13,12 +13,11 @@ class Database{
 		std::vector<Table> tables;
 		Tokenizer tokenizer;
 		Parser parser;
-		std::string sqlFile;
 	public:
 		Database(){}
 		void execute(std::string strQuery);
 		void printTable();
-		void save_sql();
+		void save_sql(std::ofstream& os);
 		void save(std::ofstream& os);
 		void load(std::ifstream& os);
 };

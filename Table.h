@@ -20,6 +20,7 @@ class Table{
 		Table(Table const & t1, Table const & t2, std::string abbr1, std::string abbr2, Where const & viewWhere);//for inner join
 		std::string getName()const{return name;}
 		void save(std::ofstream& os)const;
+		void save_sql(std::ofstream& os)const;
 		void print_Table() const;
 		void insert_into(std::vector<std::string> const & where_to_insert, std::vector<std::string> const & what_to_insert);
 		void update(Set& set, Where& where);
