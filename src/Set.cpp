@@ -1,4 +1,4 @@
-#include "Set.h"
+#include "../h/Set.h"
 void Set::set(std::vector<std::vector<std::string>>& table, int row, const std::vector<std::string> columnName){
 	for(auto pair : pairs){
 		int i = 0;

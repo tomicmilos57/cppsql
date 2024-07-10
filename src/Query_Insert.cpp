@@ -1,4 +1,4 @@
-#include "Query_Insert.h"
+#include "../h/Query_Insert.h"
 Query_Insert::Query_Insert(std::vector<std::string> tokens_) : Query(tokens_){
 	if(!(lower(tokens.at(0)) == "insert" && lower(tokens.at(1)) == "into" && tokens.at(3) == "("))
 		throw std::string("Wrong Fromat");

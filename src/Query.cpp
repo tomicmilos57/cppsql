@@ -1,4 +1,4 @@
-#include "Query.h"
+#include "../h/Query.h"
 #include <string>
 void Query::read_columns(int& i, std::string lastToken, std::vector<std::string>& columns, bool last, bool byValue){
 	for(int j = 0; i < tokens.size() && lower(tokens[i]) != lastToken; i++, j++) {

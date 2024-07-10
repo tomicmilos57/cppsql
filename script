@@ -1,0 +1,4 @@
+#!/bin/bash
+rm cppsql
+g++ -ggdb3 -o cppsql src/*.cpp
+./cppsql

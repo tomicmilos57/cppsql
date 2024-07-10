@@ -1,4 +1,4 @@
-#include "Table.h"
+#include "../h/Table.h"
 #include <iterator>
 #include <sstream>
 Table::Table(std::string name, std::vector<std::string> const & columns_name){ //Throw exception if columns have the same name

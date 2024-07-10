@@ -1,4 +1,4 @@
-#include "Where.h"
+#include "../h/Where.h"
 bool Where::conditionTrue(std::vector<std::vector<std::string>> table, int row, const std::vector<std::string> columnName) const {
 	bool condition = true;
 	for(auto pair : pairs){

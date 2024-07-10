@@ -1,4 +1,4 @@
-#include "Query_Delete.h"
+#include "../h/Query_Delete.h"
 Query_Delete::Query_Delete(std::vector<std::string> tokens) : Query(tokens){	
 	if(!(lower(tokens.at(0)) == "delete" && lower(tokens.at(1)) == "from")) throw std::string("Wrong Fromat");
 	tableName = tokens.at(2);

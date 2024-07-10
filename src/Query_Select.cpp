@@ -1,4 +1,4 @@
-#include "Query_Select.h"
+#include "../h/Query_Select.h"
 Query_Select::Query_Select(std::vector<std::string> tokens) : Query(tokens){
 	if(lower(tokens.at(0)) != "select") throw std::string("Wrong Fromat");
 	int i = 1;

@@ -1,4 +1,4 @@
-#include "Query_Drop.h"
+#include "../h/Query_Drop.h"
 Query_Drop::Query_Drop(std::vector<std::string> tokens) : Query(tokens){
 	if(!(lower(tokens.at(0)) == "drop" && lower(tokens.at(1)) == "table" && tokens.size() == 3)) throw std::string("Wrong Fromat");
 	tableName = tokens.at(2);

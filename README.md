@@ -19,11 +19,11 @@ This project is a C++ software system designed for simulating database operation
     ```
 2. Compile the project using a C++ compiler:
     ```sh
-    g++ -o cppsql *.cpp
+    g++ -o cppsql src/*.cpp
     ```
     or
     ```sh
-    ./skripta
+    ./script
     ```
 
 ## Usage

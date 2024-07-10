@@ -1,4 +1,4 @@
-#include "Database.h"
+#include "../h/Database.h"
 void Database::execute(std::string strQuery){
 	Query *query;
 	try {
